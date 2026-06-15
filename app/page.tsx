@@ -180,11 +180,18 @@ export default function Home() {
         className="relative flex min-h-screen items-center justify-center overflow-hidden px-8 pt-28 text-center"
       >
         <div
-          className="absolute inset-0 scale-110 bg-cover bg-center bg-no-repeat transition-transform duration-100"
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-100"
           style={{
             backgroundImage: "url('/hero.jpg.png')",
-            backgroundPosition: `center ${heroOffset}px`,
-            transform: `scale(${1 + Math.min(heroOffset / 3000, 0.08)})`,
+            backgroundPosition:
+              typeof window !== 'undefined' && window.innerWidth < 768
+                ? 'center top'
+                : `center ${heroOffset}px`,
+            transform: `scale(${
+              typeof window !== 'undefined' && window.innerWidth < 768
+                ? 1
+                : 1 + Math.min(heroOffset / 3000, 0.08)
+            })`,
           }}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/35 via-black/25 to-black/65"></div>
@@ -236,7 +243,7 @@ export default function Home() {
           <div>
             <div className="aspect-[4/5] overflow-hidden rounded-3xl bg-neutral-200 shadow-2xl">
               <img
-                src="/about picture.jpg"
+                src="/about picture.JPG"
                 alt="Carter and Tori Harrison"
                 className="h-full w-full object-cover"
               />

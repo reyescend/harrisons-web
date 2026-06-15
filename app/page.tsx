@@ -185,7 +185,7 @@ export default function Home() {
             backgroundImage: "url('/hero.jpg.png')",
             backgroundPosition:
               typeof window !== 'undefined' && window.innerWidth < 768
-                ? 'center top'
+                ? 'center 25%'
                 : `center ${heroOffset}px`,
             transform: `scale(${
               typeof window !== 'undefined' && window.innerWidth < 768

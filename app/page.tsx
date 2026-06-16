@@ -257,12 +257,12 @@ export default function Home() {
               About The Harrisons
             </p>
 
-            <h2 className="text-4xl font-semibold tracking-[-0.04em] md:text-6xl">
+            <h2 className="text-3xl leading-tight font-semibold tracking-[-0.04em] sm:text-4xl md:text-6xl">
               Creating spaces where people encounter Jesus, hear His voice, and respond with faith.
             </h2>
 
             <p className="mt-8 max-w-xl text-lg leading-relaxed text-black/70">
-              Carter and Tori Harrison travel churches, conferences, and revival gatherings with a passion to see lives transformed by the presence of God. Through worship, biblical teaching, and Spirit-led ministry, they help create environments where people encounter Jesus, grow in faith, and step boldly into their calling.
+              Carter and Tori Harrison travel to churches, conferences, and revival gatherings with a passion to see lives transformed by the presence of God. Through worship, biblical teaching, and Spirit-led ministry, they help create environments where people encounter Jesus, grow in faith, and step boldly into their calling.
             </p>
           </div>
 
@@ -292,11 +292,8 @@ export default function Home() {
                   Worship Moment
                 </p>
                 <h3 className="text-2xl md:text-3xl font-semibold">
-                  How To Hear God's Voice
+                  Goodbye Yesterday
                 </h3>
-                <p className="mt-4 leading-relaxed text-white/70">
-                  Creating environments where people can encounter the presence of God through authentic worship.
-                </p>
                 <p className="mt-8 text-sm font-medium text-blue-400 transition group-hover:underline group-hover:translate-x-1">
                   Watch Worship →
                 </p>
@@ -309,11 +306,8 @@ export default function Home() {
                   Worship Moment
                 </p>
                 <h3 className="text-2xl md:text-3xl font-semibold">
-                  Holy Forever
+                  Facedown
                 </h3>
-                <p className="mt-4 leading-relaxed text-white/70">
-                  Practical, Spirit-filled messages that inspire faith, growth, and transformation.
-                </p>
                 <p className="mt-8 text-sm font-medium text-fuchsia-400 transition group-hover:underline group-hover:translate-x-1">
                   Watch Worship →
                 </p>
@@ -323,14 +317,11 @@ export default function Home() {
               <img src="https://img.youtube.com/vi/ODSCqKyKsBE/maxresdefault.jpg" alt="Featured Sermon" className="h-56 w-full object-cover" />
               <div className="p-10">
                 <p className="mb-6 text-xs uppercase tracking-[0.3em] text-white/50">
-                  Sermon
+                  Full Sermon
                 </p>
                 <h3 className="text-2xl md:text-3xl font-semibold">
                   Featured Sermon
                 </h3>
-                <p className="mt-4 leading-relaxed text-white/70">
-                  Partnering with churches to create moments where people respond to the voice of Jesus.
-                </p>
                 <p className="mt-8 text-sm font-medium text-amber-300 transition group-hover:underline group-hover:translate-x-1">
                   Watch Sermon →
                 </p>
@@ -340,14 +331,11 @@ export default function Home() {
               <img src="https://img.youtube.com/vi/PDQ8lY-UADY/maxresdefault.jpg" alt="Featured Sermon" className="h-56 w-full object-cover" />
               <div className="p-10">
                 <p className="mb-6 text-xs uppercase tracking-[0.3em] text-white/50">
-                  Sermon
+                  Full Sermon
                 </p>
                 <h3 className="text-2xl md:text-3xl font-semibold">
                   Featured Sermon
                 </h3>
-                <p className="mt-4 leading-relaxed text-white/70">
-                  A powerful message centered on Jesus, faith, and Spirit-led transformation.
-                </p>
                 <p className="mt-8 text-sm font-medium text-emerald-300 transition group-hover:underline group-hover:translate-x-1">
                   Watch Sermon →
                 </p>

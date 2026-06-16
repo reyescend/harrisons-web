@@ -14,6 +14,7 @@ export default function Home() {
   const [brokenForBattleSuccess, setBrokenForBattleSuccess] = useState(false);
   const [brokenForBattleSubmitting, setBrokenForBattleSubmitting] = useState(false);
   const [heroOffset, setHeroOffset] = useState(0);
+  const [missionGlow, setMissionGlow] = useState({ x: 50, y: 50 });
   const featuredRef = useRef<HTMLDivElement | null>(null);
   const photoRef = useRef<HTMLDivElement | null>(null);
   const isDragging = useRef(false);
@@ -311,30 +312,58 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="relative overflow-hidden bg-black px-6 py-24 md:py-32 text-center text-white">
-        <div className="mx-auto max-w-5xl">
-          <p className="text-xs uppercase tracking-[0.45em] text-amber-300/90">
-            His Burden. Our Mission.
-          </p>
+      <section
+        className="relative overflow-hidden bg-black px-6 py-24 md:py-32 text-center text-white"
+        onMouseMove={(e) => {
+          const rect = e.currentTarget.getBoundingClientRect();
+          setMissionGlow({
+            x: ((e.clientX - rect.left) / rect.width) * 100,
+            y: ((e.clientY - rect.top) / rect.height) * 100,
+          });
+        }}
+      >
+        <div
+          className="pointer-events-none absolute inset-0 transition-opacity duration-300"
+          style={{
+            background: `radial-gradient(500px circle at ${missionGlow.x}% ${missionGlow.y}%, rgba(255,255,255,0.12), transparent 45%)`,
+          }}
+        />
+        <div
+          className="absolute inset-0 bg-cover bg-center opacity-40"
+          style={{
+            backgroundImage: "url('/christup.jpg')",
+            backgroundPosition: 'center 20%',
+          }}
+        />
+        <div className="absolute inset-0 bg-black/45" />
+        <div className="relative z-20 mx-auto max-w-5xl pb-36 md:pb-44">
+          <div>
+            <p className="text-xs uppercase tracking-[0.45em] text-amber-300/90">
+              His Burden. Our Mission.
+            </p>
 
-          <h2 className="mt-8 text-4xl md:text-7xl font-semibold tracking-[-0.06em] leading-tight">
-            Carrying His presence,
-            <br />
-            proclaiming His gospel,
-            <br />
-            and strengthening His Church.
-          </h2>
-          <p className="mx-auto mt-10 max-w-2xl text-base md:text-lg leading-relaxed text-white/60">
-            Every gathering is an opportunity for people to encounter the presence of God, be transformed by His voice, and respond to His call.
-          </p>
+            <h2 className="mt-8 text-4xl md:text-6xl font-semibold tracking-[-0.06em] leading-tight">
+              Carrying His presence,
+              <br />
+              proclaiming His gospel,
+              <br />
+              and strengthening His Church.
+            </h2>
+
+            <p className="mx-auto mt-10 max-w-2xl text-base md:text-lg leading-relaxed text-white/70">
+              Every gathering is an opportunity for people to encounter the presence of God, be transformed by His voice, and respond to His call.
+            </p>
+          </div>
         </div>
+        <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-b from-transparent via-black/5 to-[#f7f5f2]" />
       </section>
 
       <section
         id="about"
-        className="bg-white px-6 py-24 md:py-32 lg:px-16 lg:py-40 text-black reveal-section"
+        className="relative -mt-20 bg-[#f7f5f2] px-6 py-24 md:py-32 lg:px-16 lg:py-40 text-black reveal-section"
         ref={el => { revealRefs.current[0] = el; }}
       >
+        <div className="absolute -top-16 left-0 right-0 h-16 rounded-t-[100%] bg-[#f7f5f2]" />
         <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
 
           <div>
@@ -366,12 +395,15 @@ export default function Home() {
       </section>
 
       <section
-        className="relative overflow-hidden bg-black px-6 py-24 md:py-32 lg:px-16 lg:py-36 text-white reveal-section"
+        className="relative overflow-hidden bg-black px-6 pt-40 pb-24 md:pt-48 md:pb-32 lg:px-16 lg:pt-52 lg:pb-36 text-white reveal-section"
         ref={el => { revealRefs.current[1] = el; }}
       >
+        <div className="absolute top-0 left-0 right-0 h-32 md:h-40 lg:h-48 overflow-hidden">
+          <div className="absolute -top-24 md:-top-32 lg:-top-40 left-[-10%] right-[-10%] h-48 md:h-64 lg:h-80 rounded-b-[100%] bg-[#f7f5f2]" />
+        </div>
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.18),transparent_35%)]"></div>
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_right,rgba(168,85,247,0.18),transparent_35%)]"></div>
-        <div className="relative mx-auto max-w-7xl overflow-hidden">
+        <div className="relative z-10 mx-auto max-w-7xl overflow-hidden">
           <div className="mb-6 h-px w-24 bg-gradient-to-r from-white via-white/50 to-transparent" />
           <p className="mb-6 text-xs uppercase tracking-[0.35em] text-white/50">
             Featured Moments
@@ -478,11 +510,15 @@ export default function Home() {
             </a>
           </div>
         </div>
+        {/* Curved transition at the bottom of Featured Moments */}
+        <div className="absolute bottom-0 left-0 right-0 h-32 md:h-40 lg:h-48 overflow-hidden">
+          <div className="absolute -bottom-24 md:-bottom-32 lg:-bottom-40 left-[-10%] right-[-10%] h-48 md:h-64 lg:h-80 rounded-t-[100%] bg-[#050505]" />
+        </div>
       </section>
 
       <section
         id="book"
-        className="bg-[#050505] px-6 lg:px-16 py-40 text-white reveal-section"
+        className="relative -mt-8 bg-[#050505] px-6 lg:px-16 py-40 text-white reveal-section"
         ref={el => { revealRefs.current[2] = el; }}
       >
         <div className="mx-auto max-w-5xl text-center">

@@ -6,9 +6,11 @@ export default function Home() {
   const [scrolled, setScrolled] = useState(false);
   const [showBookingModal, setShowBookingModal] = useState(false);
   const [bookingType, setBookingType] = useState('');
+  const [requestType, setRequestType] = useState('');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [bookingSuccess, setBookingSuccess] = useState(false);
+  const [bookingError, setBookingError] = useState('');
   const [heroOffset, setHeroOffset] = useState(0);
   const galleryRef = useRef<HTMLDivElement | null>(null);
   const isDragging = useRef(false);
@@ -101,10 +103,11 @@ export default function Home() {
     e.preventDefault();
 
     if (!bookingType) {
-      alert('Please select who you would like to book.');
+      setBookingError('Please select who you would like to book.');
       return;
     }
 
+    setBookingError('');
     setSubmitting(true);
 
     const formData = new FormData(e.currentTarget);
@@ -177,7 +180,7 @@ export default function Home() {
         )}
       </header>
       <section
-        className="relative flex min-h-screen items-center justify-center overflow-hidden px-8 pt-28 text-center"
+        className="relative flex min-h-[100svh] items-center justify-center overflow-hidden px-4 md:px-8 pt-24 md:pt-28 text-center"
       >
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-100"
@@ -185,18 +188,18 @@ export default function Home() {
             backgroundImage: "url('/hero.jpg.png')",
             backgroundPosition:
               typeof window !== 'undefined' && window.innerWidth < 768
-                ? 'center 35%'
+                ? '72% 30%'
                 : `center ${heroOffset}px`,
             transform: `scale(${
               typeof window !== 'undefined' && window.innerWidth < 768
-                ? 1
+                ? 1.12
                 : 1 + Math.min(heroOffset / 3000, 0.08)
             })`,
           }}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/35 via-black/25 to-black/65"></div>
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_35%,rgba(0,0,0,0.45)_100%)]"></div>
-        <div className="relative z-10 px-4 pt-24 md:pt-32">
+        <div className="relative z-10 px-4 pt-32 md:pt-32">
 
           <h1 className="text-4xl font-semibold tracking-[-0.08em] text-white sm:text-5xl md:text-7xl lg:text-[7.5rem]">
             Carter & Tori
@@ -282,12 +285,12 @@ export default function Home() {
             Messages, worship moments, and conversations impacting lives.
           </h2>
 
-          <div className="mt-20 grid gap-8 md:grid-cols-3">
-            <a href="#" className="group block overflow-hidden rounded-[32px] border border-white/10 bg-white/[0.03] transition-all duration-500 hover:-translate-y-2 hover:border-white/20 hover:bg-white/[0.05]">
-              <div className="h-56 bg-gradient-to-br from-cyan-500 via-blue-600 to-indigo-900"></div>
+          <div className="mt-20 grid gap-8 md:grid-cols-2 xl:grid-cols-4">
+            <a href="https://youtu.be/J3XLGXPld2g?is=b055TN4TR6kSWbIO" target="_blank" rel="noopener noreferrer" className="group block overflow-hidden rounded-[32px] border border-white/10 bg-white/[0.03] transition-all duration-500 hover:-translate-y-2 hover:border-white/20 hover:bg-white/[0.05]">
+              <img src="https://img.youtube.com/vi/J3XLGXPld2g/maxresdefault.jpg" alt="How To Hear God's Voice" className="h-56 w-full object-cover" />
               <div className="p-10">
                 <p className="mb-6 text-xs uppercase tracking-[0.3em] text-white/50">
-                  Latest Message
+                  Worship Moment
                 </p>
                 <h3 className="text-2xl md:text-3xl font-semibold">
                   How To Hear God's Voice
@@ -296,13 +299,12 @@ export default function Home() {
                   Creating environments where people can encounter the presence of God through authentic worship.
                 </p>
                 <p className="mt-8 text-sm font-medium text-blue-400 transition group-hover:underline group-hover:translate-x-1">
-                  Watch Message →
+                  Watch Worship →
                 </p>
               </div>
             </a>
-
-            <a href="#" className="group block overflow-hidden rounded-[32px] border border-white/10 bg-white/[0.03] transition-all duration-500 hover:-translate-y-2 hover:border-white/20 hover:bg-white/[0.05]">
-              <div className="h-56 bg-gradient-to-br from-fuchsia-500 via-purple-600 to-indigo-950"></div>
+            <a href="https://youtu.be/m3QIGOv4dWE?is=kCKcCZgLrwqEzKvv" target="_blank" rel="noopener noreferrer" className="group block overflow-hidden rounded-[32px] border border-white/10 bg-white/[0.03] transition-all duration-500 hover:-translate-y-2 hover:border-white/20 hover:bg-white/[0.05]">
+              <img src="https://img.youtube.com/vi/m3QIGOv4dWE/maxresdefault.jpg" alt="Holy Forever" className="h-56 w-full object-cover" />
               <div className="p-10">
                 <p className="mb-6 text-xs uppercase tracking-[0.3em] text-white/50">
                   Worship Moment
@@ -318,21 +320,37 @@ export default function Home() {
                 </p>
               </div>
             </a>
-
-            <a href="#" className="group block overflow-hidden rounded-[32px] border border-white/10 bg-white/[0.03] transition-all duration-500 hover:-translate-y-2 hover:border-white/20 hover:bg-white/[0.05]">
-              <div className="h-56 bg-gradient-to-br from-amber-400 via-orange-500 to-red-700"></div>
+            <a href="https://www.youtube.com/live/ODSCqKyKsBE?si=hOXKkBpMMFErfqkx" target="_blank" rel="noopener noreferrer" className="group block overflow-hidden rounded-[32px] border border-white/10 bg-white/[0.03] transition-all duration-500 hover:-translate-y-2 hover:border-white/20 hover:bg-white/[0.05]">
+              <img src="https://img.youtube.com/vi/ODSCqKyKsBE/maxresdefault.jpg" alt="Featured Sermon" className="h-56 w-full object-cover" />
               <div className="p-10">
                 <p className="mb-6 text-xs uppercase tracking-[0.3em] text-white/50">
-                  Podcast Episode
+                  Sermon
                 </p>
                 <h3 className="text-2xl md:text-3xl font-semibold">
-                  Discernment vs Anxiety
+                  Featured Sermon
                 </h3>
                 <p className="mt-4 leading-relaxed text-white/70">
                   Partnering with churches to create moments where people respond to the voice of Jesus.
                 </p>
                 <p className="mt-8 text-sm font-medium text-amber-300 transition group-hover:underline group-hover:translate-x-1">
-                  Listen Now →
+                  Watch Sermon →
+                </p>
+              </div>
+            </a>
+            <a href="https://www.youtube.com/live/PDQ8lY-UADY?si=nGc3_a4w0H7iNDJ0" target="_blank" rel="noopener noreferrer" className="group block overflow-hidden rounded-[32px] border border-white/10 bg-white/[0.03] transition-all duration-500 hover:-translate-y-2 hover:border-white/20 hover:bg-white/[0.05]">
+              <img src="https://img.youtube.com/vi/PDQ8lY-UADY/maxresdefault.jpg" alt="Featured Sermon" className="h-56 w-full object-cover" />
+              <div className="p-10">
+                <p className="mb-6 text-xs uppercase tracking-[0.3em] text-white/50">
+                  Sermon
+                </p>
+                <h3 className="text-2xl md:text-3xl font-semibold">
+                  Featured Sermon
+                </h3>
+                <p className="mt-4 leading-relaxed text-white/70">
+                  A powerful message centered on Jesus, faith, and Spirit-led transformation.
+                </p>
+                <p className="mt-8 text-sm font-medium text-emerald-300 transition group-hover:underline group-hover:translate-x-1">
+                  Watch Sermon →
                 </p>
               </div>
             </a>
@@ -402,12 +420,34 @@ export default function Home() {
             </p>
 
             <div className="mt-10">
-              <a
-                href="#"
-                className="inline-flex items-center rounded-full bg-black px-8 py-4 text-sm font-medium uppercase tracking-[0.2em] text-white transition hover:opacity-90"
-              >
-                Join The Next Gathering
-              </a>
+              <form className="max-w-xl space-y-4" action="/api/broken-for-battle" method="POST">
+                <input
+                  type="text"
+                  placeholder="First Name"
+                  name="firstName"
+                  required
+                  className="w-full rounded-xl border border-black/10 bg-white px-5 py-4 text-black focus:outline-none focus:ring-2 focus:ring-black/10"
+                />
+
+                <input
+                  type="email"
+                  placeholder="Email Address"
+                  name="email"
+                  required
+                  className="w-full rounded-xl border border-black/10 bg-white px-5 py-4 text-black focus:outline-none focus:ring-2 focus:ring-black/10"
+                />
+
+                <button
+                  type="submit"
+                  className="inline-flex items-center rounded-full bg-black px-8 py-4 text-sm font-medium uppercase tracking-[0.2em] text-white transition hover:opacity-90"
+                >
+                  Join Broken For Battle
+                </button>
+              </form>
+              
+              <p className="mt-4 text-sm text-black/60">
+                Be the first to know about upcoming gatherings, livestreams, and ministry updates.
+              </p>
             </div>
           </div>
 
@@ -533,6 +573,11 @@ export default function Home() {
         <p className="mb-4 text-sm font-medium uppercase tracking-[0.2em] text-black/50">
           Who would you like to book?
         </p>
+        {bookingError && (
+          <p className="mb-4 text-sm text-red-500">
+            {bookingError}
+          </p>
+        )}
 
         <div className="grid gap-4 md:grid-cols-3">
           <button type="button" onClick={() => setBookingType('Carter')} className={`rounded-2xl border p-5 ${bookingType === 'Carter' ? 'bg-black text-white border-black' : 'border-black/10'}`}>
@@ -547,33 +592,148 @@ export default function Home() {
             Carter + Tori
           </button>
         </div>
+
+        {bookingType === 'Carter' && (
+          <div className="mt-6 rounded-2xl bg-black/5 p-4 text-sm text-black/70">
+            Carter — Preaching or Teaching, Worship, Panel Discussions, and Other Ministry Inquiries. A team member will always travel with Carter. Travel accommodations must be provided.
+          </div>
+        )}
+
+        {bookingType === 'Tori' && (
+          <div className="mt-6 rounded-2xl bg-black/5 p-4 text-sm text-black/70">
+            Tori — Preaching or Teaching, Worship, Panel Discussions, and Other Ministry Inquiries. A team member will always travel with Tori. Travel accommodations must be provided.
+          </div>
+        )}
+
+        {bookingType === 'Carter + Tori' && (
+          <div className="mt-6 rounded-2xl bg-black/5 p-4 text-sm text-black/70">
+            Carter + Tori — Preaching or Teaching, Worship, Panel Discussions, and Other Ministry Inquiries.
+          </div>
+        )}
       </div>
 
       {!bookingSuccess ? (
       <form onSubmit={handleBookingSubmit}>
         <input type="hidden" name="bookingType" value={bookingType} />
 
+        {bookingType && (
+          <div className="mb-6 grid gap-4 md:grid-cols-2">
+            <select
+              name="requestType"
+              required
+              className="rounded-xl border border-black/10 p-4 transition focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10"
+              value={requestType}
+              onChange={(e) => setRequestType(e.target.value)}
+            >
+              <option value="" disabled>
+                Select Request Type
+              </option>
+              <option value="Preaching or Teaching">Preaching or Teaching</option>
+              <option value="Worship">Worship</option>
+              <option value="Panel">Panel Discussion</option>
+              <option value="Other Inquiry">Other Inquiry</option>
+            </select>
+
+            {(bookingType === 'Carter' || bookingType === 'Tori') && (
+              <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-black/70">
+                A team member will always travel with {bookingType}. Travel accommodations must be provided.
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Dynamic fields based on requestType */}
+        {requestType === 'Worship' && (
+          <div className="mb-6 grid gap-4 md:grid-cols-2">
+            <input
+              name="bandNeeded"
+              placeholder="Is a band needed?"
+              className="rounded-xl border border-black/10 p-4 transition focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10"
+            />
+
+            <input
+              name="localMusicians"
+              placeholder="Will local musicians be provided?"
+              className="rounded-xl border border-black/10 p-4 transition focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10"
+            />
+          </div>
+        )}
+
+        {requestType === 'Preaching or Teaching' && (
+          <input
+            name="sessions"
+            placeholder="Number of speaking sessions requested"
+            className="mb-6 w-full rounded-xl border border-black/10 p-4 transition focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10"
+          />
+        )}
+
+        {requestType === 'Panel' && (
+          <input
+            name="panelTopic"
+            placeholder="Panel topic or discussion focus"
+            className="mb-6 w-full rounded-xl border border-black/10 p-4 transition focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10"
+          />
+        )}
+
+        {(requestType === 'Worship' || requestType === 'Other Inquiry') && (
+          <div className="mb-6 rounded-xl border border-black/10 bg-black/[0.02] p-4 text-sm text-black/70">
+            If this request includes worship ministry, please indicate whether a band is needed in the event details below. If a band is requested, travel expenses and accommodations for the team must be covered.
+          </div>
+        )}
+
         <div className="mt-8 grid gap-4 md:grid-cols-2">
           <input name="fullName" required placeholder="First & Last Name" className="rounded-xl border border-black/10 p-4 transition focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10" />
+          <input
+            name="pointOfContact"
+            required
+            placeholder="Point of Contact / Position"
+            className="rounded-xl border border-black/10 p-4 transition focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10"
+          />
           <input name="church" required placeholder="Name of Church" className="rounded-xl border border-black/10 p-4 transition focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10" />
+          <input
+            name="attendance"
+            placeholder="Expected Attendance"
+            className="rounded-xl border border-black/10 p-4 transition focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10"
+          />
           <input name="eventName" required placeholder="Name of Event" className="rounded-xl border border-black/10 p-4 transition focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10" />
+          <input
+            name="budget"
+            placeholder="Budget"
+            className="rounded-xl border border-black/10 p-4 transition focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10"
+          />
           <input name="phone" placeholder="Phone" className="rounded-xl border border-black/10 p-4 transition focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10" />
           <input name="email" required type="email" placeholder="Email" className="rounded-xl border border-black/10 p-4 transition focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10" />
-          <input name="website" placeholder="Event Website" className="rounded-xl border border-black/10 p-4 transition focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10" />
-          <input name="startDate" required type="date" className="rounded-xl border border-black/10 p-4 transition focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10" />
-          <input name="endDate" required type="date" className="rounded-xl border border-black/10 p-4 transition focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10" />
+          <input name="website" placeholder="Church / Event Website" className="rounded-xl border border-black/10 p-4 transition focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10" />
+          <input
+            name="venueAddress"
+            placeholder="Venue Address"
+            className="rounded-xl border border-black/10 p-4 transition focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10"
+          />
+          <div className="flex flex-col gap-2">
+            <label className="text-xs uppercase tracking-[0.2em] text-black/50">
+              Start Date
+            </label>
+            <input name="startDate" required type="date" className="rounded-xl border border-black/10 p-4 transition focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10" />
+          </div>
+          <div className="flex flex-col gap-2">
+            <label className="text-xs uppercase tracking-[0.2em] text-black/50">
+              End Date
+            </label>
+            <input name="endDate" required type="date" className="rounded-xl border border-black/10 p-4 transition focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10" />
+          </div>
         </div>
+
 
         <textarea
           name="eventDetails"
           rows={8}
           required
-          placeholder="Please describe your event in detail, including the type and purpose, event time(s), location, expected audience size, budget range, worship team details, spiritual themes, special requests, and anything else we should know."
+          placeholder="Tell us about your event, audience, location, vision, schedule, budget, ministry goals, and any specific requests for this booking."
           className="mt-4 w-full rounded-xl border border-black/10 p-4 transition focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10"
         />
 
         <div className="mt-4 text-sm text-black/60">
-          Email: harrisonworship@gmail.com
+          Email: contact@harrisonministries.org
         </div>
 
         <button
@@ -612,12 +772,10 @@ export default function Home() {
       <p className="mb-2 text-xs uppercase tracking-[0.35em] text-white/40">
         Connect
       </p>
-      <a href="https://instagram.com/creativeharrisons" target="_blank" rel="noopener noreferrer">Instagram</a>
-      <a href="https://youtube.com/@creativeharrisons" target="_blank" rel="noopener noreferrer">YouTube</a>
-      <a href="https://www.facebook.com/creativeharrisons" target="_blank" rel="noopener noreferrer">Facebook</a>
-      <a href="https://tiktok.com/@creativeharrisons" target="_blank" rel="noopener noreferrer">TikTok</a>
+      <a href="https://instagram.com/creative.harrisons" target="_blank" rel="noopener noreferrer">Instagram</a>
+      <a href="https://www.facebook.com/creative.harrisons" target="_blank" rel="noopener noreferrer">Facebook</a>
       <p className="mt-3 text-xs normal-case tracking-normal text-white/50">
-        harrisonworship@gmail.com
+        contact@harrisonministries.org
       </p>
     </div>
   </div>
@@ -669,5 +827,4 @@ export default function Home() {
     </main>
   );
 }
-
 

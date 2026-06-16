@@ -17,6 +17,7 @@ export default function Home() {
   const [missionGlow, setMissionGlow] = useState({ x: 50, y: 50 });
   const featuredRef = useRef<HTMLDivElement | null>(null);
   const photoRef = useRef<HTMLDivElement | null>(null);
+  const galleryRef = featuredRef;
   const isDragging = useRef(false);
   const startX = useRef(0);
   const scrollLeft = useRef(0);

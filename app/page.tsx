@@ -183,16 +183,19 @@ export default function Home() {
         className="relative flex min-h-[80svh] md:min-h-[100svh] items-center justify-center overflow-hidden text-center"
       >
         <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-100"
+          className="absolute inset-0 bg-cover bg-no-repeat transition-transform duration-100 md:hidden"
           style={{
-            backgroundImage:
-              typeof window !== 'undefined' && window.innerWidth < 768
-                ? "url('/poster.avif')"
-                : "url('/hero.jpg.png')",
-            backgroundPosition:
-              typeof window !== 'undefined' && window.innerWidth < 768
-                ? '60% center'
-                : '68% center',
+            backgroundImage: "url('/verticalhero.png')",
+            backgroundPosition: '60% center',
+            transform: `scale(${1 + Math.min(heroOffset / 3000, 0.08)})`,
+          }}
+        />
+
+        <div
+          className="absolute inset-0 hidden bg-cover bg-no-repeat transition-transform duration-100 md:block"
+          style={{
+            backgroundImage: "url('/hero.jpg.png')",
+            backgroundPosition: '68% center',
             transform: `scale(${1 + Math.min(heroOffset / 3000, 0.08)})`,
           }}
         />

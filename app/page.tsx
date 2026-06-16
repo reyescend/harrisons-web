@@ -180,36 +180,32 @@ export default function Home() {
         )}
       </header>
       <section
-        className="relative flex min-h-[100svh] items-center justify-center overflow-hidden px-4 md:px-8 pt-24 md:pt-28 text-center"
+        className="relative flex min-h-[80svh] md:min-h-[100svh] items-center justify-center overflow-hidden text-center"
       >
         <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-100"
+          className="absolute inset-0 bg-cover bg-no-repeat transition-transform duration-100"
           style={{
             backgroundImage: "url('/hero.jpg.png')",
             backgroundPosition:
               typeof window !== 'undefined' && window.innerWidth < 768
-                ? '72% 30%'
-                : `center ${heroOffset}px`,
-            transform: `scale(${
-              typeof window !== 'undefined' && window.innerWidth < 768
-                ? 1.12
-                : 1 + Math.min(heroOffset / 3000, 0.08)
-            })`,
+                ? 'center top'
+                : '68% center',
+            transform: `scale(${1 + Math.min(heroOffset / 3000, 0.08)})`,
           }}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/35 via-black/25 to-black/65"></div>
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_35%,rgba(0,0,0,0.45)_100%)]"></div>
-        <div className="relative z-10 px-4 pt-32 md:pt-32">
+        <div className="relative z-10 px-6 pt-20 md:pt-32">
 
-          <h1 className="text-4xl font-semibold tracking-[-0.08em] text-white sm:text-5xl md:text-7xl lg:text-[7.5rem]">
+          <h1 className="text-4xl font-semibold tracking-[-0.06em] text-white sm:text-6xl md:text-7xl lg:text-[7.5rem]">
             Carter & Tori
           </h1>
 
-          <p className="mx-auto mt-6 max-w-md text-xs uppercase tracking-[0.45em] text-white/75 md:text-sm">
+          <p className="mx-auto mt-4 max-w-md text-[11px] uppercase tracking-[0.35em] text-white/75 md:mt-6 md:text-sm md:tracking-[0.45em]">
             Worship • Teaching • Ministry
           </p>
 
-          <div className="mt-16 flex justify-center">
+          <div className="mt-10 md:mt-16 flex justify-center">
             <a
               href="#about"
               aria-label="Scroll to About"

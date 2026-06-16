@@ -11,6 +11,8 @@ export default function Home() {
   const [submitting, setSubmitting] = useState(false);
   const [bookingSuccess, setBookingSuccess] = useState(false);
   const [bookingError, setBookingError] = useState('');
+  const [brokenForBattleSuccess, setBrokenForBattleSuccess] = useState(false);
+  const [brokenForBattleSubmitting, setBrokenForBattleSubmitting] = useState(false);
   const [heroOffset, setHeroOffset] = useState(0);
   const galleryRef = useRef<HTMLDivElement | null>(null);
   const isDragging = useRef(false);
@@ -126,6 +128,38 @@ export default function Home() {
       alert('There was a problem sending your request.');
     } finally {
       setSubmitting(false);
+    }
+  };
+
+  const handleBrokenForBattleSubmit = async (
+    e: React.FormEvent<HTMLFormElement>
+  ) => {
+    e.preventDefault();
+
+    setBrokenForBattleSubmitting(true);
+
+    const formData = new FormData(e.currentTarget);
+
+    try {
+      const response = await fetch('/api/broken-for-battle', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          firstName: formData.get('firstName'),
+          email: formData.get('email'),
+        }),
+      });
+
+      if (!response.ok) throw new Error('Failed');
+
+      setBrokenForBattleSuccess(true);
+      e.currentTarget.reset();
+    } catch (error) {
+      alert('There was a problem joining Broken For Battle.');
+    } finally {
+      setBrokenForBattleSubmitting(false);
     }
   };
 
@@ -403,7 +437,7 @@ export default function Home() {
             </p>
 
             <div className="mt-10">
-              <form className="max-w-xl space-y-4" action="/api/broken-for-battle" method="POST">
+              <form className="max-w-xl space-y-4" onSubmit={handleBrokenForBattleSubmit}>
                 <input
                   type="text"
                   placeholder="First Name"
@@ -422,10 +456,16 @@ export default function Home() {
 
                 <button
                   type="submit"
-                  className="inline-flex items-center rounded-full bg-black px-8 py-4 text-sm font-medium uppercase tracking-[0.2em] text-white transition hover:opacity-90"
+                  disabled={brokenForBattleSubmitting}
+                  className="inline-flex items-center rounded-full bg-black px-8 py-4 text-sm font-medium uppercase tracking-[0.2em] text-white transition hover:opacity-90 disabled:opacity-50"
                 >
-                  Join Broken For Battle
+                  {brokenForBattleSubmitting ? 'Joining...' : 'Join Broken For Battle'}
                 </button>
+                {brokenForBattleSuccess && (
+                  <p className="text-sm text-green-600">
+                    You're in! We'll keep you updated on future gatherings.
+                  </p>
+                )}
               </form>
               
               <p className="mt-4 text-sm text-black/60">
@@ -447,7 +487,7 @@ export default function Home() {
           </p>
 
           <h2 className="text-5xl font-semibold tracking-[-0.05em] md:text-7xl">
-            Partner With The Mission
+            Partner With Us
           </h2>
 
           <p className="mx-auto mt-8 max-w-3xl text-lg leading-relaxed text-white/70">
@@ -461,7 +501,7 @@ export default function Home() {
               rel="noopener noreferrer"
               className="inline-flex items-center rounded-full bg-white px-8 py-4 text-sm font-medium uppercase tracking-[0.2em] text-black transition hover:opacity-90"
             >
-              Partner With The Mission
+              Partner With Us
             </a>
           </div>
         </div>

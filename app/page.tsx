@@ -117,6 +117,7 @@ export default function Home() {
       });
 
       if (!response.ok) throw new Error('Failed');
+      setBookingError('');
 
       setBookingSuccess(true);
       e.currentTarget.reset();
@@ -125,7 +126,8 @@ export default function Home() {
         setShowBookingModal(false);
       }, 2500);
     } catch (error) {
-      alert('There was a problem sending your request.');
+      console.error('Booking submission failed:', error);
+      setBookingError('There was a problem sending your request. Please try again.');
     } finally {
       setSubmitting(false);
     }

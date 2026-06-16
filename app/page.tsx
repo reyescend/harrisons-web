@@ -14,7 +14,8 @@ export default function Home() {
   const [brokenForBattleSuccess, setBrokenForBattleSuccess] = useState(false);
   const [brokenForBattleSubmitting, setBrokenForBattleSubmitting] = useState(false);
   const [heroOffset, setHeroOffset] = useState(0);
-  const galleryRef = useRef<HTMLDivElement | null>(null);
+  const featuredRef = useRef<HTMLDivElement | null>(null);
+  const photoRef = useRef<HTMLDivElement | null>(null);
   const isDragging = useRef(false);
   const startX = useRef(0);
   const scrollLeft = useRef(0);
@@ -117,10 +118,13 @@ export default function Home() {
     }
   };
 
-  const scrollGallery = (direction: 'left' | 'right') => {
-    if (!galleryRef.current) return;
+  const scrollGallery = (
+    ref: React.RefObject<HTMLDivElement | null>,
+    direction: 'left' | 'right'
+  ) => {
+    if (!ref.current) return;
 
-    galleryRef.current.scrollBy({
+    ref.current.scrollBy({
       left: direction === 'left' ? -600 : 600,
       behavior: 'smooth',
     });
@@ -389,7 +393,7 @@ export default function Home() {
             <div className="flex gap-3">
               <button
                 type="button"
-                onClick={() => scrollGallery('left')}
+                onClick={() => scrollGallery(featuredRef, 'left')}
                 className="flex h-12 w-12 items-center justify-center rounded-full border border-white/15 text-white/70 transition hover:border-white/40 hover:text-white"
               >
                 ←
@@ -397,7 +401,7 @@ export default function Home() {
 
               <button
                 type="button"
-                onClick={() => scrollGallery('right')}
+                onClick={() => scrollGallery(featuredRef, 'right')}
                 className="flex h-12 w-12 items-center justify-center rounded-full border border-white/15 text-white/70 transition hover:border-white/40 hover:text-white"
               >
                 →
@@ -406,7 +410,7 @@ export default function Home() {
           </div>
 
           <div
-            ref={galleryRef}
+            ref={featuredRef}
             onMouseDown={handleMouseDown}
             onMouseLeave={handleMouseLeave}
             onMouseUp={handleMouseUp}
@@ -625,14 +629,14 @@ export default function Home() {
             <div className="flex gap-3">
               <button
                 type="button"
-                onClick={() => scrollGallery('left')}
+                onClick={() => scrollGallery(photoRef, 'left')}
                 className="flex h-12 w-12 items-center justify-center rounded-full border border-black/10 text-black/60 transition hover:border-black/30 hover:text-black"
               >
                 ←
               </button>
               <button
                 type="button"
-                onClick={() => scrollGallery('right')}
+                onClick={() => scrollGallery(photoRef, 'right')}
                 className="flex h-12 w-12 items-center justify-center rounded-full border border-black/10 text-black/60 transition hover:border-black/30 hover:text-black"
               >
                 →
@@ -648,7 +652,7 @@ export default function Home() {
         </div>
 
         <div
-          ref={galleryRef}
+          ref={photoRef}
           onMouseDown={handleMouseDown}
           onMouseLeave={handleMouseLeave}
           onMouseUp={handleMouseUp}

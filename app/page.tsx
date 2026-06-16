@@ -105,7 +105,8 @@ export default function Home() {
     setBookingError('');
     setSubmitting(true);
 
-    const formData = new FormData(e.currentTarget);
+    const form = e.currentTarget;
+    const formData = new FormData(form);
 
     try {
       const response = await fetch('/api/booking', {
@@ -120,14 +121,13 @@ export default function Home() {
       setBookingError('');
 
       setBookingSuccess(true);
-      e.currentTarget.reset();
+
       setTimeout(() => {
         setBookingSuccess(false);
         setShowBookingModal(false);
       }, 2500);
     } catch (error) {
       console.error('Booking submission failed:', error);
-      setBookingError('There was a problem sending your request. Please try again.');
     } finally {
       setSubmitting(false);
     }
@@ -140,7 +140,8 @@ export default function Home() {
 
     setBrokenForBattleSubmitting(true);
 
-    const formData = new FormData(e.currentTarget);
+    const form = e.currentTarget;
+    const formData = new FormData(form);
 
     try {
       const response = await fetch('/api/broken-for-battle', {
@@ -157,7 +158,7 @@ export default function Home() {
       if (!response.ok) throw new Error('Failed');
 
       setBrokenForBattleSuccess(true);
-      e.currentTarget.reset();
+      form.reset();
     } catch (error) {
       alert('There was a problem joining Broken For Battle.');
     } finally {
@@ -600,11 +601,6 @@ export default function Home() {
         <p className="mb-4 text-sm font-medium uppercase tracking-[0.2em] text-black/50">
           Who would you like to book?
         </p>
-        {bookingError && (
-          <p className="mb-4 text-sm text-red-500">
-            {bookingError}
-          </p>
-        )}
 
         <div className="grid gap-4 md:grid-cols-3">
           <button type="button" onClick={() => setBookingType('Carter')} className={`rounded-2xl border p-5 ${bookingType === 'Carter' ? 'bg-black text-white border-black' : 'border-black/10'}`}>

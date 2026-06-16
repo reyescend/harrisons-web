@@ -520,7 +520,7 @@ export default function Home() {
             className="h-[420px] md:h-[620px] w-[460px] flex-none rounded-[32px] object-cover"
           />
           <img
-            src="/IMG_5161.JPG"
+            src="/IMG_1859.JPG"
             alt="Ministry Moment"
             className="mt-16 h-[500px] w-[360px] flex-none rounded-[32px] object-cover"
           />

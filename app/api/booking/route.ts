@@ -26,6 +26,24 @@ export async function POST(req: Request) {
         <p>${data.eventDetails}</p>
       `,
     });
+    await resend.emails.send({
+      from: 'contact@harrisonministries.org',
+      to: [data.email],
+      subject: 'Booking Request Received!',
+      html: `
+        <p>Greetings,</p>
+
+        <p>Thank you so much for reaching out and for considering ${data.bookingType} for your upcoming event.</p>
+
+        <p>Please know that we have received your booking request and our team will prayerfully review the details. You can expect a response regarding availability and next steps within 7–14 business days.</p>
+
+        <p>We are thankful for your consideration and look forward to the possibility of serving alongside you.</p>
+
+        <p>Blessings,</p>
+
+        <p><strong>Carter & Tori Harrison Ministries</strong></p>
+      `,
+    });
     console.log('RESEND RESULT:', result);
 
     return NextResponse.json({ success: true });

@@ -311,10 +311,13 @@ export default function Home() {
             </a>
           </div>
         </div>
+        <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-40 md:h-56 overflow-hidden">
+          <div className="absolute -bottom-24 md:-bottom-32 left-[-10%] right-[-10%] h-48 md:h-72 rounded-t-[100%] bg-black" />
+        </div>
       </section>
 
       <section
-        className="relative overflow-hidden bg-black px-6 py-24 md:py-32 text-center text-white"
+        className="relative -mt-12 md:-mt-20 overflow-hidden bg-black px-6 py-24 md:py-32 text-center text-white"
         onMouseMove={(e) => {
           const rect = e.currentTarget.getBoundingClientRect();
           setMissionGlow({
@@ -337,7 +340,7 @@ export default function Home() {
           }}
         />
         <div className="absolute inset-0 bg-black/45" />
-        <div className="relative z-20 mx-auto max-w-5xl pb-36 md:pb-44">
+        <div className="relative z-20 mx-auto max-w-5xl pt-12 md:pt-16 pb-36 md:pb-44">
           <div>
             <p className="text-xs uppercase tracking-[0.45em] text-amber-300/90">
               His Burden. Our Mission.

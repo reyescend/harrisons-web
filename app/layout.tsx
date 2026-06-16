@@ -40,7 +40,6 @@ export const metadata: Metadata = {
   category: "Ministry",
   creator: "Harrison Ministries",
   publisher: "Harrison Ministries",
-  themeColor: "#0B0B0B",
   icons: {
     icon: "/websiteicon.png",
     shortcut: "/websiteicon.png",
@@ -53,7 +52,7 @@ export const metadata: Metadata = {
     siteName: "Harrison Ministries",
     images: [
       {
-        url: "/og-image.jpg",
+        url: "/preview.jpg",
         width: 1200,
         height: 630,
         alt: "Carter & Tori Harrison",
@@ -65,8 +64,12 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Carter & Tori Harrison",
     description: "Worship • Teaching • Ministry",
-    images: ["/og-image.jpg"],
+    images: ["/preview.jpg"],
   },
+};
+
+export const viewport = {
+  themeColor: "#0B0B0B",
 };
 
 export default function RootLayout({

@@ -24,12 +24,48 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "Carter & Tori Harrison",
+  metadataBase: new URL("https://harrisonministries.org"),
+  title: {
+    default: "Carter & Tori Harrison",
+    template: "%s | Harrison Ministries",
+  },
   description: "Worship leaders, speakers, and ministers passionate about helping people encounter Jesus and walk in His purpose.",
+  alternates: {
+    canonical: "https://harrisonministries.org",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+  category: "Ministry",
+  creator: "Harrison Ministries",
+  publisher: "Harrison Ministries",
+  themeColor: "#0B0B0B",
   icons: {
     icon: "/websiteicon.png",
     shortcut: "/websiteicon.png",
     apple: "/websiteicon.png",
+  },
+  openGraph: {
+    title: "Carter & Tori Harrison",
+    description: "Worship • Teaching • Ministry",
+    url: "https://harrisonministries.org",
+    siteName: "Harrison Ministries",
+    images: [
+      {
+        url: "/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Carter & Tori Harrison",
+      },
+    ],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Carter & Tori Harrison",
+    description: "Worship • Teaching • Ministry",
+    images: ["/og-image.jpg"],
   },
 };
 

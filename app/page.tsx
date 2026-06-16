@@ -28,7 +28,7 @@ export default function Home() {
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, [mobileMenuOpen]);
   useEffect(() => {
@@ -50,13 +50,6 @@ export default function Home() {
     return () => observer.disconnect();
   }, []);
 
-  useEffect(() => {
-    document.documentElement.style.scrollBehavior = 'smooth';
-
-    return () => {
-      document.documentElement.style.scrollBehavior = 'auto';
-    };
-  }, []);
 
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!galleryRef.current) return;
@@ -183,7 +176,7 @@ export default function Home() {
         className="relative flex min-h-[80svh] md:min-h-[100svh] items-center justify-center overflow-hidden text-center"
       >
         <div
-          className="absolute inset-0 bg-cover bg-no-repeat transition-transform duration-100 md:hidden"
+          className="absolute inset-0 bg-cover bg-no-repeat transition-transform duration-300 md:hidden"
           style={{
             backgroundImage: "url('/verticalhero.png')",
             backgroundPosition: '60% center',
@@ -192,7 +185,7 @@ export default function Home() {
         />
 
         <div
-          className="absolute inset-0 hidden bg-cover bg-no-repeat transition-transform duration-100 md:block"
+          className="absolute inset-0 hidden bg-cover bg-no-repeat transition-transform duration-300 md:block"
           style={{
             backgroundImage: "url('/hero.jpg.png')",
             backgroundPosition: '68% center',
@@ -463,10 +456,12 @@ export default function Home() {
 
           <div className="mt-12">
             <a
-              href="#"
+              href="https://givebutter.com/JB09mh"
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-flex items-center rounded-full bg-white px-8 py-4 text-sm font-medium uppercase tracking-[0.2em] text-black transition hover:opacity-90"
             >
-              Give Now
+              Partner With The Mission
             </a>
           </div>
         </div>

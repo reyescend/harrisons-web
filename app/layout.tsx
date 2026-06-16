@@ -52,7 +52,7 @@ export const metadata: Metadata = {
     siteName: "Harrison Ministries",
     images: [
       {
-        url: "/preview.jpg",
+        url: "https://harrisonministries.org/preview.jpg",
         width: 1200,
         height: 630,
         alt: "Carter & Tori Harrison",
@@ -64,7 +64,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Carter & Tori Harrison",
     description: "Worship • Teaching • Ministry",
-    images: ["/preview.jpg"],
+    images: ["https://harrisonministries.org/preview.jpg"],
   },
 };
 

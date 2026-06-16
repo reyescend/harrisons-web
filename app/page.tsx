@@ -183,12 +183,15 @@ export default function Home() {
         className="relative flex min-h-[80svh] md:min-h-[100svh] items-center justify-center overflow-hidden text-center"
       >
         <div
-          className="absolute inset-0 bg-cover bg-no-repeat transition-transform duration-100"
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-100"
           style={{
-            backgroundImage: "url('/hero.jpg.png')",
+            backgroundImage:
+              typeof window !== 'undefined' && window.innerWidth < 768
+                ? "url('/verticalhero.png')"
+                : "url('/hero.jpg.png')",
             backgroundPosition:
               typeof window !== 'undefined' && window.innerWidth < 768
-                ? 'center top'
+                ? 'center center'
                 : '68% center',
             transform: `scale(${1 + Math.min(heroOffset / 3000, 0.08)})`,
           }}

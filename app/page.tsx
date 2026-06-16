@@ -187,7 +187,7 @@ export default function Home() {
           style={{
             backgroundImage:
               typeof window !== 'undefined' && window.innerWidth < 768
-                ? "url('/verticalhero.png')"
+                ? "url('/poster.avif')"
                 : "url('/hero.jpg.png')",
             backgroundPosition:
               typeof window !== 'undefined' && window.innerWidth < 768

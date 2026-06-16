@@ -270,14 +270,14 @@ export default function Home() {
         className="bg-white px-6 py-24 md:py-32 lg:px-16 lg:py-40 text-black reveal-section"
         ref={el => { revealRefs.current[0] = el; }}
       >
-        <div className="mx-auto grid max-w-7xl gap-20 lg:grid-cols-2 lg:items-center">
+        <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-2 lg:items-center">
 
           <div>
-            <div className="aspect-[4/5] overflow-hidden rounded-3xl bg-neutral-200 shadow-2xl">
+            <div className="overflow-hidden rounded-3xl shadow-2xl">
               <img
                 src="/about picture.JPG"
                 alt="Carter and Tori Harrison"
-                className="h-full w-full object-cover"
+                className="w-full h-auto"
               />
             </div>
           </div>

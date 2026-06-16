@@ -76,7 +76,7 @@ export default function Home() {
     e.preventDefault();
 
     const x = e.pageX - galleryRef.current.offsetLeft;
-    const walk = (x - startX.current) * 2.5;
+    const walk = (x - startX.current) * 1.5;
     galleryRef.current.scrollLeft = scrollLeft.current - walk;
   };
 
@@ -92,6 +92,38 @@ export default function Home() {
     const x = e.touches[0].pageX;
     const walk = (x - touchStartX.current) * 2;
     galleryRef.current.scrollLeft = scrollLeft.current - walk;
+  };
+
+  const handleWheelScroll = (e: React.WheelEvent<HTMLDivElement>) => {
+    const container = e.currentTarget;
+
+    if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
+
+    const atStart = container.scrollLeft <= 0;
+    const atEnd =
+      container.scrollLeft + container.clientWidth >=
+      container.scrollWidth - 2;
+
+    const scrollingLeft = e.deltaY < 0;
+    const scrollingRight = e.deltaY > 0;
+
+    const canScrollHorizontally =
+      (scrollingLeft && !atStart) ||
+      (scrollingRight && !atEnd);
+
+    if (canScrollHorizontally) {
+      e.preventDefault();
+      container.scrollLeft += e.deltaY;
+    }
+  };
+
+  const scrollGallery = (direction: 'left' | 'right') => {
+    if (!galleryRef.current) return;
+
+    galleryRef.current.scrollBy({
+      left: direction === 'left' ? -600 : 600,
+      behavior: 'smooth',
+    });
   };
 
   const handleBookingSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -167,7 +199,7 @@ export default function Home() {
   };
 
   return (
-    <main className="relative scroll-smooth text-white">
+    <main className="relative overflow-x-hidden scroll-smooth text-white">
       <header
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           scrolled
@@ -185,26 +217,30 @@ export default function Home() {
             className="flex h-10 w-10 items-center justify-center text-2xl transition-all lg:hidden"
             aria-label="Toggle menu"
           >
-            {mobileMenuOpen ? '×' : '☰'}
+            <span className="relative block h-5 w-6">
+              <span className={`absolute left-0 top-0 h-0.5 w-6 bg-white transition-all ${mobileMenuOpen ? 'translate-y-2 rotate-45' : ''}`} />
+              <span className={`absolute left-0 top-2 h-0.5 w-6 bg-white transition-all ${mobileMenuOpen ? 'opacity-0' : 'opacity-100'}`} />
+              <span className={`absolute left-0 top-4 h-0.5 w-6 bg-white transition-all ${mobileMenuOpen ? '-translate-y-2 -rotate-45' : ''}`} />
+            </span>
           </button>
 
           <nav className="hidden lg:block">
             <ul className="flex items-center gap-10 text-sm uppercase tracking-[0.18em] text-white/85">
-              <li><a href="#about">About</a></li>
-              <li><a href="#book">Book</a></li>
-              <li><a href="#broken-for-battle">Broken For Battle</a></li>
-              <li><a href="#give">Give</a></li>
+              <li><a href="#about" className="transition hover:text-white">About</a></li>
+              <li><a href="#book" className="transition hover:text-white">Book</a></li>
+              <li><a href="#broken-for-battle" className="transition hover:text-white">Broken For Battle</a></li>
+              <li><a href="#give" className="transition hover:text-white">Give</a></li>
             </ul>
           </nav>
         </div>
 
         {mobileMenuOpen && (
-          <div className="border-t border-white/10 bg-black/95 lg:hidden">
-            <div className="flex flex-col px-6 py-6 text-sm uppercase tracking-[0.2em]">
-              <a href="#about" onClick={() => setMobileMenuOpen(false)} className="py-3">About</a>
-              <a href="#book" onClick={() => setMobileMenuOpen(false)} className="py-3">Book</a>
-              <a href="#broken-for-battle" onClick={() => setMobileMenuOpen(false)} className="py-3">Broken For Battle</a>
-              <a href="#give" onClick={() => setMobileMenuOpen(false)} className="py-3">Give</a>
+          <div className="fixed inset-0 top-[73px] z-40 bg-black/98 backdrop-blur-xl lg:hidden">
+            <div className="flex h-full flex-col items-center justify-center gap-8 text-lg uppercase tracking-[0.25em] text-white">
+              <a href="#about" onClick={() => setMobileMenuOpen(false)}>About</a>
+              <a href="#book" onClick={() => setMobileMenuOpen(false)}>Book</a>
+              <a href="#broken-for-battle" onClick={() => setMobileMenuOpen(false)}>Broken For Battle</a>
+              <a href="#give" onClick={() => setMobileMenuOpen(false)}>Give</a>
             </div>
           </div>
         )}
@@ -233,11 +269,14 @@ export default function Home() {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_35%,rgba(0,0,0,0.45)_100%)]"></div>
         <div className="relative z-10 px-6 pt-20 md:pt-32">
 
-          <h1 className="text-4xl font-semibold tracking-[-0.06em] text-white sm:text-6xl md:text-7xl lg:text-[7.5rem]">
+          <div className="mb-6 flex justify-center">
+            <div className="h-px w-24 bg-gradient-to-r from-transparent via-white/70 to-transparent" />
+          </div>
+          <h1 className="text-5xl font-semibold tracking-[-0.06em] text-white drop-shadow-[0_0_40px_rgba(255,255,255,0.18)] sm:text-6xl md:text-7xl lg:text-[7.5rem]">
             Carter & Tori
           </h1>
 
-          <p className="mx-auto mt-4 max-w-md text-[11px] uppercase tracking-[0.35em] text-white/75 md:mt-6 md:text-sm md:tracking-[0.45em]">
+          <p className="mx-auto mt-4 max-w-xs text-[10px] uppercase tracking-[0.28em] text-white/75 md:mt-6 md:max-w-md md:text-sm md:tracking-[0.45em]">
             Worship • Teaching • Ministry
           </p>
 
@@ -268,12 +307,31 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="relative overflow-hidden bg-black px-6 py-24 md:py-32 text-center text-white">
+        <div className="mx-auto max-w-5xl">
+          <p className="text-xs uppercase tracking-[0.45em] text-amber-300/90">
+            His Burden. Our Mission.
+          </p>
+
+          <h2 className="mt-8 text-4xl md:text-7xl font-semibold tracking-[-0.06em] leading-tight">
+            Carrying His presence,
+            <br />
+            proclaiming His gospel,
+            <br />
+            and strengthening His Church.
+          </h2>
+          <p className="mx-auto mt-10 max-w-2xl text-base md:text-lg leading-relaxed text-white/60">
+            Every gathering is an opportunity for people to encounter the presence of God, be transformed by His voice, and respond to His call.
+          </p>
+        </div>
+      </section>
+
       <section
         id="about"
         className="bg-white px-6 py-24 md:py-32 lg:px-16 lg:py-40 text-black reveal-section"
         ref={el => { revealRefs.current[0] = el; }}
       >
-        <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-2 lg:items-center">
+        <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
 
           <div>
             <div className="overflow-hidden rounded-3xl shadow-2xl">
@@ -286,11 +344,12 @@ export default function Home() {
           </div>
 
           <div>
+            <div className="mb-6 h-px w-20 bg-gradient-to-r from-black via-black/50 to-transparent" />
             <p className="mb-6 text-xs uppercase tracking-[0.4em] text-black/40">
               About The Harrisons
             </p>
 
-            <h2 className="text-3xl leading-tight font-semibold tracking-[-0.04em] sm:text-4xl md:text-6xl">
+            <h2 className="text-4xl leading-tight font-semibold tracking-[-0.04em] md:text-6xl">
               Creating spaces where people encounter Jesus, hear His voice, and respond with faith.
             </h2>
 
@@ -308,18 +367,57 @@ export default function Home() {
       >
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.18),transparent_35%)]"></div>
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_right,rgba(168,85,247,0.18),transparent_35%)]"></div>
-        <div className="relative mx-auto max-w-7xl">
+        <div className="relative mx-auto max-w-7xl overflow-hidden">
+          <div className="mb-6 h-px w-24 bg-gradient-to-r from-white via-white/50 to-transparent" />
           <p className="mb-6 text-xs uppercase tracking-[0.35em] text-white/50">
             Featured Moments
           </p>
 
-          <h2 className="max-w-4xl text-4xl font-semibold tracking-[-0.04em] md:text-6xl">
+          <h2 className="max-w-5xl text-4xl font-semibold tracking-[-0.05em] md:text-6xl">
             Messages, worship moments, and conversations impacting lives.
           </h2>
 
-          <div className="mt-20 grid gap-8 md:grid-cols-2 xl:grid-cols-4">
-            <a href="https://youtu.be/J3XLGXPld2g?is=b055TN4TR6kSWbIO" target="_blank" rel="noopener noreferrer" className="group block overflow-hidden rounded-[32px] border border-white/10 bg-white/[0.03] transition-all duration-500 hover:-translate-y-2 hover:border-white/20 hover:bg-white/[0.05]">
-              <img src="https://img.youtube.com/vi/J3XLGXPld2g/maxresdefault.jpg" alt="How To Hear God's Voice" className="h-56 w-full object-cover" />
+          <div className="mt-6 flex items-center gap-3 text-sm uppercase tracking-[0.25em] text-white/50 md:hidden">
+            <span>← Swipe to explore →</span>
+          </div>
+
+          <div className="mt-6 hidden items-center justify-between md:flex">
+            <div className="text-sm uppercase tracking-[0.25em] text-white/40">
+              Scroll horizontally to explore
+            </div>
+
+            <div className="flex gap-3">
+              <button
+                type="button"
+                onClick={() => scrollGallery('left')}
+                className="flex h-12 w-12 items-center justify-center rounded-full border border-white/15 text-white/70 transition hover:border-white/40 hover:text-white"
+              >
+                ←
+              </button>
+
+              <button
+                type="button"
+                onClick={() => scrollGallery('right')}
+                className="flex h-12 w-12 items-center justify-center rounded-full border border-white/15 text-white/70 transition hover:border-white/40 hover:text-white"
+              >
+                →
+              </button>
+            </div>
+          </div>
+
+          <div
+            ref={galleryRef}
+            onMouseDown={handleMouseDown}
+            onMouseLeave={handleMouseLeave}
+            onMouseUp={handleMouseUp}
+            onMouseMove={handleMouseMove}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onWheel={handleWheelScroll}
+            className="mt-12 flex cursor-grab active:cursor-grabbing gap-8 overflow-x-auto pb-6 md:mt-20 snap-x snap-mandatory snap-always select-none scroll-smooth [scroll-behavior:smooth] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          >
+            <a href="https://youtu.be/J3XLGXPld2g?is=b055TN4TR6kSWbIO" target="_blank" rel="noopener noreferrer" className="group block min-w-[85vw] md:min-w-[520px] snap-center overflow-hidden rounded-[32px] border border-white/10 bg-white/[0.03] transition-all duration-500 hover:-translate-y-2 hover:border-white/20 hover:bg-white/[0.05]">
+              <img src="https://img.youtube.com/vi/J3XLGXPld2g/maxresdefault.jpg" alt="How To Hear God's Voice" className="h-72 md:h-80 w-full object-cover transition-transform duration-700 group-hover:scale-105" />
               <div className="p-10">
                 <p className="mb-6 text-xs uppercase tracking-[0.3em] text-white/50">
                   Worship Moment
@@ -332,8 +430,8 @@ export default function Home() {
                 </p>
               </div>
             </a>
-            <a href="https://youtu.be/m3QIGOv4dWE?is=kCKcCZgLrwqEzKvv" target="_blank" rel="noopener noreferrer" className="group block overflow-hidden rounded-[32px] border border-white/10 bg-white/[0.03] transition-all duration-500 hover:-translate-y-2 hover:border-white/20 hover:bg-white/[0.05]">
-              <img src="https://img.youtube.com/vi/m3QIGOv4dWE/maxresdefault.jpg" alt="Holy Forever" className="h-56 w-full object-cover" />
+            <a href="https://youtu.be/m3QIGOv4dWE?is=kCKcCZgLrwqEzKvv" target="_blank" rel="noopener noreferrer" className="group block min-w-[85vw] md:min-w-[520px] snap-center overflow-hidden rounded-[32px] border border-white/10 bg-white/[0.03] transition-all duration-500 hover:-translate-y-2 hover:border-white/20 hover:bg-white/[0.05]">
+              <img src="https://img.youtube.com/vi/m3QIGOv4dWE/maxresdefault.jpg" alt="Holy Forever" className="h-72 md:h-80 w-full object-cover transition-transform duration-700 group-hover:scale-105" />
               <div className="p-10">
                 <p className="mb-6 text-xs uppercase tracking-[0.3em] text-white/50">
                   Worship Moment
@@ -346,8 +444,8 @@ export default function Home() {
                 </p>
               </div>
             </a>
-            <a href="https://www.youtube.com/live/ODSCqKyKsBE?si=hOXKkBpMMFErfqkx" target="_blank" rel="noopener noreferrer" className="group block overflow-hidden rounded-[32px] border border-white/10 bg-white/[0.03] transition-all duration-500 hover:-translate-y-2 hover:border-white/20 hover:bg-white/[0.05]">
-              <img src="https://img.youtube.com/vi/ODSCqKyKsBE/maxresdefault.jpg" alt="Featured Sermon" className="h-56 w-full object-cover" />
+            <a href="https://www.youtube.com/live/ODSCqKyKsBE?si=hOXKkBpMMFErfqkx" target="_blank" rel="noopener noreferrer" className="group block min-w-[85vw] md:min-w-[520px] snap-center overflow-hidden rounded-[32px] border border-white/10 bg-white/[0.03] transition-all duration-500 hover:-translate-y-2 hover:border-white/20 hover:bg-white/[0.05]">
+              <img src="https://img.youtube.com/vi/ODSCqKyKsBE/maxresdefault.jpg" alt="Featured Sermon" className="h-72 md:h-80 w-full object-cover transition-transform duration-700 group-hover:scale-105" />
               <div className="p-10">
                 <p className="mb-6 text-xs uppercase tracking-[0.3em] text-white/50">
                   Full Sermon
@@ -360,8 +458,8 @@ export default function Home() {
                 </p>
               </div>
             </a>
-            <a href="https://www.youtube.com/live/PDQ8lY-UADY?si=nGc3_a4w0H7iNDJ0" target="_blank" rel="noopener noreferrer" className="group block overflow-hidden rounded-[32px] border border-white/10 bg-white/[0.03] transition-all duration-500 hover:-translate-y-2 hover:border-white/20 hover:bg-white/[0.05]">
-              <img src="https://img.youtube.com/vi/PDQ8lY-UADY/maxresdefault.jpg" alt="Featured Sermon" className="h-56 w-full object-cover" />
+            <a href="https://www.youtube.com/live/PDQ8lY-UADY?si=nGc3_a4w0H7iNDJ0" target="_blank" rel="noopener noreferrer" className="group block min-w-[85vw] md:min-w-[520px] snap-center overflow-hidden rounded-[32px] border border-white/10 bg-white/[0.03] transition-all duration-500 hover:-translate-y-2 hover:border-white/20 hover:bg-white/[0.05]">
+              <img src="https://img.youtube.com/vi/PDQ8lY-UADY/maxresdefault.jpg" alt="Featured Sermon" className="h-72 md:h-80 w-full object-cover transition-transform duration-700 group-hover:scale-105" />
               <div className="p-10">
                 <p className="mb-6 text-xs uppercase tracking-[0.3em] text-white/50">
                   Full Sermon
@@ -384,11 +482,12 @@ export default function Home() {
         ref={el => { revealRefs.current[2] = el; }}
       >
         <div className="mx-auto max-w-5xl text-center">
+          <div className="mx-auto mb-6 h-px w-20 bg-gradient-to-r from-transparent via-white/60 to-transparent" />
           <p className="mb-6 text-xs uppercase tracking-[0.35em] text-white/50">
             Booking
           </p>
 
-          <h2 className="text-5xl font-semibold tracking-[-0.05em] md:text-7xl">
+          <h2 className="text-4xl font-semibold tracking-[-0.05em] md:text-7xl">
             Bring Carter & Tori to Your Church or Event
           </h2>
 
@@ -412,7 +511,7 @@ export default function Home() {
         className="bg-neutral-100 px-6 lg:px-16 py-32 text-black reveal-section"
         ref={el => { revealRefs.current[3] = el; }}
       >
-        <div className="mx-auto grid max-w-7xl gap-20 lg:grid-cols-2 lg:items-center">
+        <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-2 lg:items-center">
 
           <div className="flex justify-center lg:justify-start">
             <img
@@ -427,7 +526,7 @@ export default function Home() {
               Online Gathering
             </p>
 
-            <h2 className="text-5xl font-semibold tracking-[-0.05em] md:text-7xl">
+            <h2 className="text-4xl font-semibold tracking-[-0.05em] md:text-7xl">
               Broken For Battle
             </h2>
 
@@ -481,15 +580,17 @@ export default function Home() {
       </section>
       <section
         id="give"
-        className="bg-black px-6 lg:px-16 py-32 text-white reveal-section"
+        className="relative overflow-hidden bg-black px-6 lg:px-16 py-32 text-white reveal-section"
         ref={el => { revealRefs.current[4] = el; }}
       >
-        <div className="mx-auto max-w-5xl text-center">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.06),transparent_60%)]" />
+        <div className="relative mx-auto max-w-5xl text-center">
+          <div className="mx-auto mb-6 h-px w-20 bg-gradient-to-r from-transparent via-white/60 to-transparent" />
           <p className="mb-6 text-xs uppercase tracking-[0.35em] text-white/50">
             Partner With Us
           </p>
 
-          <h2 className="text-5xl font-semibold tracking-[-0.05em] md:text-7xl">
+          <h2 className="text-4xl font-semibold tracking-[-0.05em] md:text-7xl">
             Partner With Us
           </h2>
 
@@ -517,10 +618,31 @@ export default function Home() {
           <p className="text-xs uppercase tracking-[0.45em] text-black/40">
             Photo Journal
           </p>
-          <p className="mt-4 text-sm uppercase tracking-[0.25em] text-black/40">
-            Drag to explore →
+          <div className="mt-4 hidden items-center justify-between md:flex">
+            <p className="text-sm uppercase tracking-[0.25em] text-black/40">
+              Drag or scroll to explore
+            </p>
+            <div className="flex gap-3">
+              <button
+                type="button"
+                onClick={() => scrollGallery('left')}
+                className="flex h-12 w-12 items-center justify-center rounded-full border border-black/10 text-black/60 transition hover:border-black/30 hover:text-black"
+              >
+                ←
+              </button>
+              <button
+                type="button"
+                onClick={() => scrollGallery('right')}
+                className="flex h-12 w-12 items-center justify-center rounded-full border border-black/10 text-black/60 transition hover:border-black/30 hover:text-black"
+              >
+                →
+              </button>
+            </div>
+          </div>
+          <p className="mt-4 text-sm uppercase tracking-[0.25em] text-black/40 md:hidden">
+            Swipe to explore →
           </p>
-          <h2 className="mt-4 text-5xl font-semibold tracking-[-0.05em] md:text-7xl">
+          <h2 className="mt-4 text-4xl font-semibold tracking-[-0.05em] md:text-7xl">
             Moments Along The Way
           </h2>
         </div>
@@ -533,54 +655,55 @@ export default function Home() {
           onMouseMove={handleMouseMove}
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
-          className="flex cursor-grab active:cursor-grabbing gap-8 overflow-x-auto pl-8 lg:pl-16 pr-16 select-none scroll-smooth [scroll-behavior:smooth] [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          onWheel={handleWheelScroll}
+          className="flex cursor-grab active:cursor-grabbing gap-5 overflow-x-auto pl-8 lg:pl-16 pr-16 select-none scroll-smooth [scroll-behavior:smooth] [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         >
           <img
             src="/worshipping.JPG"
             alt="Ministry Moment"
-            className="h-[420px] md:h-[620px] w-[460px] flex-none rounded-[32px] object-cover"
+            className="h-[320px] md:h-[620px] w-[260px] md:w-[460px] flex-none rounded-[32px] object-cover"
           />
           <img
             src="/DSC02835.JPG"
             alt="Ministry Moment"
-            className="mt-20 h-[460px] w-[320px] flex-none rounded-[32px] object-cover"
+            className="mt-20 h-[340px] md:h-[460px] w-[220px] md:w-[320px] flex-none rounded-[32px] object-cover"
           />
           <img
             src="/IMG_1859.JPG"
             alt="Ministry Moment"
-            className="h-[500px] md:h-[720px] w-[540px] flex-none rounded-[32px] object-cover"
+            className="h-[320px] md:h-[720px] w-[240px] md:w-[540px] flex-none rounded-[32px] object-cover"
           />
           <img
             src="/IMG_6078.jpeg"
             alt="Ministry Moment"
-            className="mt-12 h-[360px] md:h-[520px] w-[380px] flex-none rounded-[32px] object-cover"
+            className="mt-12 h-[220px] md:h-[520px] w-[140px] md:w-[380px] flex-none rounded-[32px] object-cover"
           />
           <img
             src="/IMG_6886.jpeg"
             alt="Ministry Moment"
-            className="h-[420px] md:h-[620px] w-[460px] flex-none rounded-[32px] object-cover"
+            className="h-[320px] md:h-[620px] w-[260px] md:w-[460px] flex-none rounded-[32px] object-cover"
           />
           <img
             src="/IMG_1859.JPG"
             alt="Ministry Moment"
-            className="mt-16 h-[500px] w-[360px] flex-none rounded-[32px] object-cover"
+            className="mt-16 h-[320px] md:h-[500px] w-[240px] md:w-[360px] flex-none rounded-[32px] object-cover"
           />
           <img
             src="/IMG_1848.JPG"
             alt="Ministry Moment"
-            className="h-[460px] md:h-[680px] w-[500px] flex-none rounded-[32px] object-cover"
+            className="h-[320px] md:h-[680px] w-[240px] md:w-[500px] flex-none rounded-[32px] object-cover"
           />
           <img
             src="/IMG_1858.JPG"
             alt="Ministry Moment"
-            className="mt-20 h-[460px] w-[320px] flex-none rounded-[32px] object-cover"
+            className="mt-20 h-[340px] md:h-[460px] w-[220px] md:w-[320px] flex-none rounded-[32px] object-cover"
           />
         </div>
       </section>
 {showBookingModal && (
-  <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 p-6 backdrop-blur-md animate-fadeIn">
-    <div className="max-h-[95vh] w-full max-w-3xl overflow-y-auto rounded-[32px] bg-white p-6 pb-10 md:p-10 text-black animate-modalIn">
-      <div className="flex items-center justify-between">
+  <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 p-3 md:p-6 backdrop-blur-md animate-fadeIn">
+    <div className="max-h-[92vh] w-full max-w-4xl overflow-y-auto rounded-[28px] bg-white p-5 pb-8 md:p-10 text-black animate-modalIn shadow-2xl">
+      <div className="sticky top-0 z-10 -mx-5 -mt-5 mb-6 flex items-center justify-between border-b border-black/10 bg-white px-5 py-4 md:-mx-10 md:-mt-10 md:px-10 md:py-6">
         <h3 className="text-2xl md:text-4xl font-semibold tracking-[-0.04em]">
           Booking Request
         </h3>
@@ -602,16 +725,28 @@ export default function Home() {
           Who would you like to book?
         </p>
 
-        <div className="grid gap-4 md:grid-cols-3">
-          <button type="button" onClick={() => setBookingType('Carter')} className={`rounded-2xl border p-5 ${bookingType === 'Carter' ? 'bg-black text-white border-black' : 'border-black/10'}`}>
+        <div className="grid gap-3 md:grid-cols-3">
+          <button
+            type="button"
+            onClick={() => setBookingType('Carter')}
+            className={`rounded-2xl border p-4 text-sm font-medium transition-all ${bookingType === 'Carter' ? 'bg-black text-white border-black' : 'border-black/10'}`}
+          >
             Carter
           </button>
 
-          <button type="button" onClick={() => setBookingType('Tori')} className={`rounded-2xl border p-5 ${bookingType === 'Tori' ? 'bg-black text-white border-black' : 'border-black/10'}`}>
+          <button
+            type="button"
+            onClick={() => setBookingType('Tori')}
+            className={`rounded-2xl border p-4 text-sm font-medium transition-all ${bookingType === 'Tori' ? 'bg-black text-white border-black' : 'border-black/10'}`}
+          >
             Tori
           </button>
 
-          <button type="button" onClick={() => setBookingType('Carter + Tori')} className={`rounded-2xl border p-5 ${bookingType === 'Carter + Tori' ? 'bg-black text-white border-black' : 'border-black/10'}`}>
+          <button
+            type="button"
+            onClick={() => setBookingType('Carter + Tori')}
+            className={`rounded-2xl border p-4 text-sm font-medium transition-all ${bookingType === 'Carter + Tori' ? 'bg-black text-white border-black' : 'border-black/10'}`}
+          >
             Carter + Tori
           </button>
         </div>
@@ -637,6 +772,9 @@ export default function Home() {
 
       {!bookingSuccess ? (
       <form onSubmit={handleBookingSubmit}>
+        <div className="mb-6 rounded-2xl border border-black/10 bg-neutral-50 p-4 text-sm text-black/60">
+          Complete the details below and our team will review your request and respond as soon as possible.
+        </div>
         <input type="hidden" name="bookingType" value={bookingType} />
 
         {bookingType && (
@@ -644,7 +782,7 @@ export default function Home() {
             <select
               name="requestType"
               required
-              className="rounded-xl border border-black/10 p-4 transition focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10"
+              className="rounded-2xl border border-black/10 bg-neutral-50 p-4 transition-all focus:bg-white focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10"
               value={requestType}
               onChange={(e) => setRequestType(e.target.value)}
             >
@@ -671,13 +809,13 @@ export default function Home() {
             <input
               name="bandNeeded"
               placeholder="Is a band needed?"
-              className="rounded-xl border border-black/10 p-4 transition focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10"
+              className="rounded-2xl border border-black/10 bg-neutral-50 p-4 transition-all focus:bg-white focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10"
             />
 
             <input
               name="localMusicians"
               placeholder="Will local musicians be provided?"
-              className="rounded-xl border border-black/10 p-4 transition focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10"
+              className="rounded-2xl border border-black/10 bg-neutral-50 p-4 transition-all focus:bg-white focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10"
             />
           </div>
         )}
@@ -686,7 +824,7 @@ export default function Home() {
           <input
             name="sessions"
             placeholder="Number of speaking sessions requested"
-            className="mb-6 w-full rounded-xl border border-black/10 p-4 transition focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10"
+            className="mb-6 w-full rounded-2xl border border-black/10 bg-neutral-50 p-4 transition-all focus:bg-white focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10"
           />
         )}
 
@@ -694,7 +832,7 @@ export default function Home() {
           <input
             name="panelTopic"
             placeholder="Panel topic or discussion focus"
-            className="mb-6 w-full rounded-xl border border-black/10 p-4 transition focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10"
+            className="mb-6 w-full rounded-2xl border border-black/10 bg-neutral-50 p-4 transition-all focus:bg-white focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10"
           />
         )}
 
@@ -704,45 +842,45 @@ export default function Home() {
           </div>
         )}
 
-        <div className="mt-8 grid gap-4 md:grid-cols-2">
-          <input name="fullName" required placeholder="First & Last Name" className="rounded-xl border border-black/10 p-4 transition focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10" />
+        <div className="mt-8 grid gap-3 md:grid-cols-2">
+          <input name="fullName" required placeholder="First & Last Name" className="rounded-2xl border border-black/10 bg-neutral-50 p-4 transition-all focus:bg-white focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10" />
           <input
             name="pointOfContact"
             required
             placeholder="Point of Contact / Position"
-            className="rounded-xl border border-black/10 p-4 transition focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10"
+            className="rounded-2xl border border-black/10 bg-neutral-50 p-4 transition-all focus:bg-white focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10"
           />
-          <input name="church" required placeholder="Name of Church" className="rounded-xl border border-black/10 p-4 transition focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10" />
+          <input name="church" required placeholder="Name of Church" className="rounded-2xl border border-black/10 bg-neutral-50 p-4 transition-all focus:bg-white focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10" />
           <input
             name="attendance"
             placeholder="Expected Attendance"
-            className="rounded-xl border border-black/10 p-4 transition focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10"
+            className="rounded-2xl border border-black/10 bg-neutral-50 p-4 transition-all focus:bg-white focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10"
           />
-          <input name="eventName" required placeholder="Name of Event" className="rounded-xl border border-black/10 p-4 transition focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10" />
+          <input name="eventName" required placeholder="Name of Event" className="rounded-2xl border border-black/10 bg-neutral-50 p-4 transition-all focus:bg-white focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10" />
           <input
             name="budget"
             placeholder="Budget"
-            className="rounded-xl border border-black/10 p-4 transition focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10"
+            className="rounded-2xl border border-black/10 bg-neutral-50 p-4 transition-all focus:bg-white focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10"
           />
-          <input name="phone" placeholder="Phone" className="rounded-xl border border-black/10 p-4 transition focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10" />
-          <input name="email" required type="email" placeholder="Email" className="rounded-xl border border-black/10 p-4 transition focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10" />
-          <input name="website" placeholder="Church / Event Website" className="rounded-xl border border-black/10 p-4 transition focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10" />
+          <input name="phone" placeholder="Phone" className="rounded-2xl border border-black/10 bg-neutral-50 p-4 transition-all focus:bg-white focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10" />
+          <input name="email" required type="email" placeholder="Email" className="rounded-2xl border border-black/10 bg-neutral-50 p-4 transition-all focus:bg-white focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10" />
+          <input name="website" placeholder="Church / Event Website" className="rounded-2xl border border-black/10 bg-neutral-50 p-4 transition-all focus:bg-white focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10" />
           <input
             name="venueAddress"
             placeholder="Venue Address"
-            className="rounded-xl border border-black/10 p-4 transition focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10"
+            className="rounded-2xl border border-black/10 bg-neutral-50 p-4 transition-all focus:bg-white focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10"
           />
           <div className="flex flex-col gap-2">
             <label className="text-xs uppercase tracking-[0.2em] text-black/50">
               Start Date
             </label>
-            <input name="startDate" required type="date" className="rounded-xl border border-black/10 p-4 transition focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10" />
+            <input name="startDate" required type="date" className="rounded-2xl border border-black/10 bg-neutral-50 p-4 transition-all focus:bg-white focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10" />
           </div>
           <div className="flex flex-col gap-2">
             <label className="text-xs uppercase tracking-[0.2em] text-black/50">
               End Date
             </label>
-            <input name="endDate" required type="date" className="rounded-xl border border-black/10 p-4 transition focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10" />
+            <input name="endDate" required type="date" className="rounded-2xl border border-black/10 bg-neutral-50 p-4 transition-all focus:bg-white focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10" />
           </div>
         </div>
 
@@ -752,7 +890,7 @@ export default function Home() {
           rows={8}
           required
           placeholder="Tell us about your event, audience, location, vision, schedule, budget, ministry goals, and any specific requests for this booking."
-          className="mt-4 w-full rounded-xl border border-black/10 p-4 transition focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10"
+          className="mt-4 w-full rounded-2xl border border-black/10 bg-neutral-50 p-4 transition-all focus:bg-white focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10"
         />
 
         <div className="mt-4 text-sm text-black/60">
@@ -762,7 +900,7 @@ export default function Home() {
         <button
           type="submit"
           disabled={submitting}
-          className="mt-8 w-full rounded-xl bg-black py-4 text-white transition hover:opacity-90 disabled:opacity-50"
+          className="mt-8 w-full rounded-2xl bg-black py-5 text-sm font-medium uppercase tracking-[0.2em] text-white transition hover:opacity-90 disabled:opacity-50"
         >
           {submitting ? 'Sending...' : bookingSuccess ? 'Request Sent' : 'Send Request'}
         </button>
@@ -770,33 +908,47 @@ export default function Home() {
       ) : (
         <div className="mt-8 rounded-2xl border border-green-200 bg-green-50 p-8 text-center">
           <div className="text-4xl">✓</div>
-          <h4 className="mt-3 text-2xl font-semibold">We'll Be In Touch Soon</h4>
+          <h4 className="mt-3 text-2xl font-semibold">Thank You</h4>
           <p className="mt-3 text-black/70">
-            Your request has been received. Our team will review the details and follow up shortly.
+            Your request has been received. We count it an honor to be considered for your gathering. Our team will prayerfully review the details and follow up soon.
           </p>
         </div>
       )}
     </div>
   </div>
 )}
+      {/* Partner floating button */}
+      <a
+        href="https://givebutter.com/JB09mh"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="fixed bottom-5 right-5 z-40 rounded-full border border-white/20 bg-white/90 backdrop-blur-xl px-5 py-3 text-xs font-medium uppercase tracking-[0.2em] text-black shadow-2xl transition-all duration-300 hover:scale-105 hover:bg-white"
+      >
+        Partner
+      </a>
 <footer className="bg-black px-6 lg:px-16 py-20 text-white">
   <div className="mx-auto flex max-w-7xl flex-col gap-10 md:flex-row md:items-end md:justify-between">
     <div>
-      <p className="text-xs uppercase tracking-[0.4em] text-white/50">
-        The Harrisons
+      <p className="text-xs uppercase tracking-[0.45em] text-white/40">
+        Harrison Ministries
       </p>
 
       <h3 className="mt-4 text-3xl font-semibold tracking-[-0.04em]">
         Carter & Tori
       </h3>
+      <div className="mt-6 space-y-2 text-sm text-white/60">
+        <p>Bookings: contact@harrisonministries.org</p>
+        <p>Broken For Battle • Monthly Online Gathering</p>
+        <p>Based in Tennessee • Traveling Nationwide</p>
+      </div>
     </div>
 
     <div className="flex flex-col gap-3 text-sm uppercase tracking-[0.2em] text-white/70 md:text-right">
       <p className="mb-2 text-xs uppercase tracking-[0.35em] text-white/40">
         Connect
       </p>
-      <a href="https://instagram.com/creative.harrisons" target="_blank" rel="noopener noreferrer">Instagram</a>
-      <a href="https://www.facebook.com/creative.harrisons" target="_blank" rel="noopener noreferrer">Facebook</a>
+      <a href="https://instagram.com/creative.harrisons" target="_blank" rel="noopener noreferrer" className="transition hover:text-white">Instagram</a>
+      <a href="https://www.facebook.com/creative.harrisons" target="_blank" rel="noopener noreferrer" className="transition hover:text-white">Facebook</a>
       <p className="mt-3 text-xs normal-case tracking-normal text-white/50">
         contact@harrisonministries.org
       </p>
@@ -845,6 +997,14 @@ export default function Home() {
 
         .animate-fadeIn {
           animation: fadeIn 0.25s ease forwards;
+        }
+
+        html {
+          scroll-behavior: smooth;
+        }
+
+        * {
+          -webkit-overflow-scrolling: touch;
         }
       `}</style>
     </main>

@@ -43,6 +43,10 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} h-full antialiased`}
     >
+      <head>
+        <link rel="preload" as="image" href="/hero.jpg.png" />
+        <link rel="preload" as="image" href="/verticalhero.png" media="(max-width: 767px)" />
+      </head>
       <body className="min-h-full flex flex-col">
         {children}
         <SpeedInsights />

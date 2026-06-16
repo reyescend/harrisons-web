@@ -24,6 +24,11 @@ const playfair = Playfair_Display({
 export const metadata: Metadata = {
   title: "Carter & Tori Harrison",
   description: "Worship leaders, speakers, and ministers passionate about helping people encounter Jesus and walk in His purpose.",
+  icons: {
+    icon: "/websiteicon.png",
+    shortcut: "/websiteicon.png",
+    apple: "/websiteicon.png",
+  },
 };
 
 export default function RootLayout({

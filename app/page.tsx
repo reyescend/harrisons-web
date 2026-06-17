@@ -852,12 +852,14 @@ export default function Home() {
           <div className="mb-6 grid gap-4 md:grid-cols-2">
             <input
               name="bandNeeded"
+              required
               placeholder="Is a band needed?"
               className="rounded-2xl border border-black/10 bg-neutral-50 p-4 transition-all focus:bg-white focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10"
             />
 
             <input
               name="localMusicians"
+              required
               placeholder="Will local musicians be provided?"
               className="rounded-2xl border border-black/10 bg-neutral-50 p-4 transition-all focus:bg-white focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10"
             />
@@ -867,6 +869,7 @@ export default function Home() {
         {requestType === 'Preaching or Teaching' && (
           <input
             name="sessions"
+            required
             placeholder="Number of speaking sessions requested"
             className="mb-6 w-full rounded-2xl border border-black/10 bg-neutral-50 p-4 transition-all focus:bg-white focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10"
           />
@@ -875,6 +878,7 @@ export default function Home() {
         {requestType === 'Panel' && (
           <input
             name="panelTopic"
+            required
             placeholder="Panel topic or discussion focus"
             className="mb-6 w-full rounded-2xl border border-black/10 bg-neutral-50 p-4 transition-all focus:bg-white focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10"
           />
@@ -897,20 +901,23 @@ export default function Home() {
           <input name="church" required placeholder="Name of Church" className="rounded-2xl border border-black/10 bg-neutral-50 p-4 transition-all focus:bg-white focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10" />
           <input
             name="attendance"
+            required
             placeholder="Expected Attendance"
             className="rounded-2xl border border-black/10 bg-neutral-50 p-4 transition-all focus:bg-white focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10"
           />
           <input name="eventName" required placeholder="Name of Event" className="rounded-2xl border border-black/10 bg-neutral-50 p-4 transition-all focus:bg-white focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10" />
           <input
             name="budget"
+            required
             placeholder="Budget"
             className="rounded-2xl border border-black/10 bg-neutral-50 p-4 transition-all focus:bg-white focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10"
           />
-          <input name="phone" placeholder="Phone" className="rounded-2xl border border-black/10 bg-neutral-50 p-4 transition-all focus:bg-white focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10" />
+          <input name="phone" required placeholder="Phone" className="rounded-2xl border border-black/10 bg-neutral-50 p-4 transition-all focus:bg-white focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10" />
           <input name="email" required type="email" placeholder="Email" className="rounded-2xl border border-black/10 bg-neutral-50 p-4 transition-all focus:bg-white focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10" />
-          <input name="website" placeholder="Church / Event Website" className="rounded-2xl border border-black/10 bg-neutral-50 p-4 transition-all focus:bg-white focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10" />
+          <input name="website" required placeholder="Church / Event Website" className="rounded-2xl border border-black/10 bg-neutral-50 p-4 transition-all focus:bg-white focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10" />
           <input
             name="venueAddress"
+            required
             placeholder="Venue Address"
             className="rounded-2xl border border-black/10 bg-neutral-50 p-4 transition-all focus:bg-white focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10"
           />

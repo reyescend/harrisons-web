@@ -22,7 +22,7 @@ export async function POST(req: Request) {
 
     await resend.emails.send({
       from: 'contact@harrisonministries.org',
-      to: ['info@reyescend.com'],
+      to: ['contact@harrisonministries.org'],
       subject: `New Booking Request - ${data.bookingType || 'Ministry Request'}`,
       html: `
         <h2>New Booking Request</h2>
@@ -51,7 +51,7 @@ export async function POST(req: Request) {
 
     await resend.emails.send({
       from: 'contact@harrisonministries.org',
-      to: ['info@reyescend.com'],
+      to: [data.email],
       subject: 'Booking Request Received!',
       html: `
         <p>Greetings,</p>

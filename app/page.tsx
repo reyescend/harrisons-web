@@ -146,6 +146,15 @@ export default function Home() {
     const form = e.currentTarget;
     const formData = new FormData(form);
 
+    const startDate = String(formData.get('startDate') || '');
+    const endDate = String(formData.get('endDate') || '');
+
+    if (startDate && endDate && new Date(endDate) < new Date(startDate)) {
+      setBookingError('End date cannot be before the start date.');
+      setSubmitting(false);
+      return;
+    }
+
     try {
       const response = await fetch('/api/booking', {
         method: 'POST',
@@ -159,6 +168,9 @@ export default function Home() {
       setBookingError('');
 
       setBookingSuccess(true);
+      form.reset();
+      setRequestType('');
+      setBookingType('');
 
       setTimeout(() => {
         setBookingSuccess(false);
@@ -947,6 +959,11 @@ export default function Home() {
         <div className="mt-4 text-sm text-black/60">
           Email: contact@harrisonministries.org
         </div>
+        {bookingError && (
+          <div className="mt-4 rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-700">
+            {bookingError}
+          </div>
+        )}
 
         <button
           type="submit"
